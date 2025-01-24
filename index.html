@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Department Ticket</title>
+  <!-- // <link rel="stylesheet" href="style.css"> -->
+    <style>
+        /* Global styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #eef2f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+}
+
+.box {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    padding: 30px;
+    text-align: center;
+}
+
+.logo {
+    width: 150px;
+    margin: 0 auto 20px;
+}
+
+h1 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 25px;
+    font-weight: bold;
+}
+
+.inputbox {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.inputbox input {
+    width: 100%;
+    padding: 12px 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    font-size: 16px;
+    color: #555;
+    transition: border-color 0.3s;
+}
+
+.inputbox input:focus {
+    border-color: #007bff;
+}
+
+.inputbox span {
+    position: absolute;
+    left: 15px;
+    top: 10px;
+    font-size: 14px;
+    color: #666;
+    background-color: #fff;
+    padding: 0 5px;
+    transition: all 0.3s ease-in-out;
+    pointer-events: none;
+}
+
+.inputbox input:focus + span,
+.inputbox input:not(:placeholder-shown) + span {
+    top: -10px;
+    font-size: 12px;
+    color: #007bff;
+}
+
+.sub {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.sub:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .box {
+        width: 90%;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    .sub {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="form">
+            <img src="images.png" alt="Company Logo" class="logo">
+            <h1>IT Department Ticket</h1>
+            <form id="userForm">
+                <!-- Name -->
+                <div class="inputbox">
+                    <input type="text" id="username" required>
+                    <span>Name</span>
+                </div>
+                <!-- Department -->
+                <div class="inputbox">
+                    <input type="text" id="Department" required>
+                    <span>Department</span>
+                </div>
+                <!-- Issue -->
+                <div class="inputbox">
+                    <input type="text" id="Issue" required>
+                    <span>Issue</span>
+                </div>
+                <!-- Resolved -->
+                <div class="inputbox">
+                    <input type="text" id="Resolved" required>
+                    <span>Resolved</span>
+                </div>
+                <!-- Remarks -->
+                <div class="inputbox">
+                    <input type="text" id="Remarks" required>
+                    <span>Remarks</span>
+                </div>
+                <!-- Email -->
+                <div class="inputbox">
+                    <input type="email" id="email" required>
+                    <span>Email</span>
+                </div>
+                <!-- Phone -->
+                <div class="inputbox">
+                    <input type="text" id="phone" required>
+                    <span>Phone number</span>
+                </div>
+                <!-- Submit Button -->
+                <input type="submit" value="Submit" class="sub" id="submit">
+            </form>
+        </div>
+    </div>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-database.js";
+        
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA_xmhjh6Ouvn5Ly6Z07MiuSKq8X4-fXQk",
+            authDomain: "it-department-a21e7.firebaseapp.com",
+            projectId: "it-department-a21e7",
+            storageBucket: "it-department-a21e7.firebasestorage.app",
+            messagingSenderId: "567980621589",
+            appId: "1:567980621589:web:7edc7e59da2c2dc3bb731c"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+
+        // Get reference to database services
+        const db = getDatabase(app);
+
+        // Listen for form submission
+        document.getElementById("userForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            // Get values from form fields
+            const username = document.getElementById("username").value;
+            const department = document.getElementById("Department").value;
+            const issue = document.getElementById("Issue").value;
+            const resolved = document.getElementById("Resolved").value;
+            const remarks = document.getElementById("Remarks").value;
+            const email = document.getElementById("email").value;
+            const phone = document.getElementById("phone").value;
+
+            // Set the ticket data in the Firebase Realtime Database
+            set(ref(db, 'tickets/' + username), {
+                username: username,
+                department: department,
+                issue: issue,
+                resolved: resolved,
+                remarks: remarks,
+                email: email,
+                phone: phone
+            }).then(() => {
+                alert("Ticket submitted successfully");
+            }).catch((error) => {
+                console.error("Error: ", error);
+            });
+        });
+    </script>
+</body>
+</html>
